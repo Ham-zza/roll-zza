@@ -1,0 +1,100 @@
+// ==UserScript==
+// @name         Roll20 Chat Font Resizer
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Roll20 채팅창 글자 크기 조절
+// @author       Hamzza
+// @match        https://app.roll20.net/editor*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    let currentFontSize = 1.05;
+
+    // 버튼 CSS 스타일
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #r20-font-ctrl {
+            position: fixed;
+            bottom: 14px;
+            right: 6px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: row; /* 가로 정렬! */
+            align-items: center;
+            gap: 2px;
+            background: #eee;
+            padding: 4px;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+        .r20-btn {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            border: 1px solid #666;
+            background: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+        }
+        .r20-btn:hover { background: #eee; border-color: #000; }
+        .r20-label {
+            font-size: 10px;
+            font-weight: bold;
+            margin-right: 5px;
+            color: #333;
+            user-select: none;
+        }
+
+        /* 채팅창 메시지 폰트 스타일 강제 적용 */
+        .textchatcontainer .message {
+            font-size: var(--r20-chat-size, 1.05em) !important;
+            line-height: 1.5 !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    const updateFontSize = (delta) => {
+        currentFontSize = Math.round((currentFontSize + delta) * 100) / 100;
+        if (currentFontSize < 0.5) currentFontSize = 0.5;
+        if (currentFontSize > 2.5) currentFontSize = 2.5;
+
+        document.documentElement.style.setProperty('--r20-chat-size', currentFontSize + 'em');
+    };
+
+    const initUI = () => {
+        if (document.getElementById('r20-font-ctrl')) return;
+
+        const container = document.createElement('div');
+        container.id = 'r20-font-ctrl';
+
+        const label = document.createElement('span');
+        label.className = 'r20-label';
+        label.innerText = '글자';
+
+        const minusBtn = document.createElement('button');
+        minusBtn.className = 'r20-btn';
+        minusBtn.innerText = '-';
+        minusBtn.onclick = () => updateFontSize(-0.05);
+
+        const plusBtn = document.createElement('button');
+        plusBtn.className = 'r20-btn';
+        plusBtn.innerText = '+';
+        plusBtn.onclick = () => updateFontSize(0.05);
+
+        container.appendChild(label);
+        container.appendChild(minusBtn);
+        container.appendChild(plusBtn);
+
+        document.body.appendChild(container);
+    };
+
+    // Roll20 로딩 대기 후 실행
+    setTimeout(initUI, 3000);
+})();
