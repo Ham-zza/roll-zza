@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    const INITIAL_SIZE = 1.05; // 글자 크기 초기값
+    const INITIAL_SIZE = 1.05; // 초기값 변수화
     let currentFontSize = INITIAL_SIZE;
 
     // 버튼 CSS 스타일
@@ -44,7 +44,7 @@
             justify-content: center;
             border-radius: 2px;
         }
-        /* 리셋 버튼 전용 스타일 */
+        /* 리셋 버튼 */
         .r20-btn-reset {
             width: auto;
             padding: 0 4px;
@@ -58,6 +58,7 @@
             margin-right: 5px;
             color: #333;
             user-select: none;
+            display: none;
         }
 
         .textchatcontainer .message {
@@ -83,7 +84,7 @@
 
         const label = document.createElement('span');
         label.className = 'r20-label';
-        label.innerText = '글자';
+        label.innerText = 'Aa';
 
         const minusBtn = document.createElement('button');
         minusBtn.className = 'r20-btn';
@@ -98,7 +99,7 @@
         // 리셋 버튼 생성
         const resetBtn = document.createElement('button');
         resetBtn.className = 'r20-btn r20-btn-reset';
-        resetBtn.innerText = 'R'; // 'Reset'
+        resetBtn.innerText = 'R'; // 좁은 공간을 위해 R로 표시 (Reset)
         resetBtn.title = '기본 크기로 리셋';
         resetBtn.onclick = () => updateFontSize(INITIAL_SIZE);
 
