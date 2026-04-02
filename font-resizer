@@ -77,14 +77,22 @@
     };
 
     const initUI = () => {
+        // 중복 실행 방지
         if (document.getElementById('r20-font-ctrl')) return;
+
+        // 채팅탭에서만 UI 노출
+        const isMainChatWindow = document.querySelector('#textchat');
+        if (!isMainChatWindow) return;
 
         const container = document.createElement('div');
         container.id = 'r20-font-ctrl';
 
+        /* 라벨 스타일
         const label = document.createElement('span');
         label.className = 'r20-label';
-        label.innerText = 'Aa';
+        label.innerText = '글자';
+        container.appendChild(label);
+        */
 
         const minusBtn = document.createElement('button');
         minusBtn.className = 'r20-btn';
@@ -96,17 +104,15 @@
         plusBtn.innerText = '+';
         plusBtn.onclick = () => updateFontSize(currentFontSize + 0.05);
 
-        // 리셋 버튼 생성
         const resetBtn = document.createElement('button');
         resetBtn.className = 'r20-btn r20-btn-reset';
-        resetBtn.innerText = 'R'; // 좁은 공간을 위해 R로 표시 (Reset)
+        resetBtn.innerText = 'R';
         resetBtn.title = '기본 크기로 리셋';
         resetBtn.onclick = () => updateFontSize(INITIAL_SIZE);
 
-        container.appendChild(label);
         container.appendChild(minusBtn);
         container.appendChild(plusBtn);
-        container.appendChild(resetBtn); // 리셋 버튼 추가
+        container.appendChild(resetBtn);
 
         document.body.appendChild(container);
     };
